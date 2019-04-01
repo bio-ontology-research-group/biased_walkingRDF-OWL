@@ -6,5 +6,6 @@ biased random walk is trying to balance the depth-first search and breadth-first
 
 # to run the code
 For example, to classify the RDF graph RDFgraph.nt using the OWL ontologies in onto_dir with the ELK reasoner, and writing an edge list representation of the inferred graph to outWrapper.txt, use the following command:
-'groovy walking-rdf-and-owl-master/RDFWrapper.groovy -i RDFgraph.nt -o graphdata/outWrapper.txt -m graphdata/mappingFile.txt -d onto_dir -c true '
+~~~~~groovy walking-rdf-and-owl-master/RDFWrapper.groovy -i RDFgraph.nt -o graphdata/outWrapper.txt -m graphdata/mappingFile.txt -d onto_dir -c true 
+~~~~
 
