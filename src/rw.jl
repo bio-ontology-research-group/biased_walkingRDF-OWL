@@ -1,7 +1,7 @@
 using LightGraphs,SimpleWeightedGraphs,Random,Word2Vec,DelimitedFiles
 
-function node2vec_walk(g, node, len,p,q)
-    no,ed=preprocess_transition_probs(g,p,q)
+function node2vec_walk(no,ed,g, node, len,p,q)
+
     walk=[node]
     while length(walk) < len
         current=last(walk)
@@ -26,10 +26,13 @@ end
 function simulate_walks(g,num_walks,len,p,q)
     walks=Array{Array}(undef,0)
     nodes=vertices(g) |> collect
+    no,ed=preprocess_transition_probs(g,p,q)
+    println("finish precomputing probability")
     for i in 1:num_walks
+        println(i)
         nodes=shuffle(nodes)
         for node in nodes
-            push!(walks,node2vec_walk(g,node,len,p,q))
+            push!(walks,node2vec_walk(no,ed,g,node,len,p,q))
         end
     end
     walks
