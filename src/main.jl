@@ -30,8 +30,8 @@ end
 #     write(deep_out,data)
 # end
 # close(deep_out)
-biased_walks=simulate_walks(g,20,100,1,0.5)
-biased_out=open("biased_walk_1_point5.txt","a")
+biased_walks=simulate_walks(g,20,100,Int64(ARGS[1]),Int64(ARGS[2]))
+biased_out=open("../graphdata/biased_walk.txt","a")
 for data in biased_walks
     for da in data
         da=string(da)*" "
@@ -40,43 +40,34 @@ for data in biased_walks
     write(biased_out,"\n")
 end
 close(biased_out)
-biased_walks=simulate_walks(g,20,100,4,1)
-biased_out=open("biased_walk_4_1.txt","a")
-for data in biased_walks
-    for da in data
-        da=string(da)*" "
-        write(biased_out,da)
-    end
-    write(biased_out,"\n")
+
+edge_list=Dict()
+for n in 1:Int64(size(graph)[1])
+       head=string(Int64(graph[n,1]))
+       tail=string(Int64(graph[n,2]))
+       combine=head*" "*tail
+       combine1=tail*" "*head
+       edge=string(Int64(graph[1,3]))
+       edge_list[combine]=edge
+       edge_list[combine1]=edge
 end
-close(biased_out)
-biased_walks=simulate_walks(g,20,100,2,1)
-biased_out=open("biased_walk_2_1.txt","a")
-for data in biased_walks
-    for da in data
-        da=string(da)*" "
-        write(biased_out,da)
-    end
-    write(biased_out,"\n")
+newfile=open("../graphdata/biased_walk/biased_graph.txt",'w')
+open("../graphdata/biased_walk/biased_walk.txt") do f
+       for line in eachline(f)
+           data=split(strip(line)," ")
+           for index in 1:length(data)-1
+               head=data[index]
+               tail=data[index+1]
+               combine=head*" "*tail
+               query=edge_list[combine]
+               if !(index==length(data)-1)
+                   write(newfile,head*" "*query*" "*tail*" ")
+               else
+                   write(newfile,head*" "*query*" "*tail)
+               end
+           end
+           write(newfile,"\n")
+       end
 end
-close(biased_out)
-biased_walks=simulate_walks(g,20,100,1,2)
-biased_out=open("biased_walk_1_2.txt","a")
-for data in biased_walks
-    for da in data
-        da=string(da)*" "
-        write(biased_out,da)
-    end
-    write(biased_out,"\n")
-end
-close(biased_out)
-biased_walks=simulate_walks(g,20,100,1,4)
-biased_out=open("biased_walk_1_4.txt","a")
-for data in biased_walks
-    for da in data
-        da=string(da)*" "
-        write(biased_out,da)
-    end
-    write(biased_out,"\n")
-end
-close(biased_out)
+model=word2vec("../graphdata/biased_walk/biased_graph.txt","../graphdata/biased_walk/embedding.txt",window=10,size=100,iter=30,verbose=true)
+
